@@ -78,4 +78,20 @@ public class UserController {
         // 返回
         return Result.ok(info);
     }
+
+    /**
+     * 签到功能
+     */
+    @PostMapping("/sign")
+    public Result sign(){
+        return userService.sign();
+    }
+
+    /**
+     * 统计连续签到天数
+     */
+    @GetMapping("/sign/count")
+    public Result signCount(){
+        return userService.signCount();
+    }
 }

@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.stream.*;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -54,8 +55,9 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
     @Autowired
     private RedissonClient redissonClient;
 
+    @Lazy
     @Resource
-    private IVoucherOrderService voucherOrderService; // 注入自身的代理对象以触发事务
+    private IVoucherOrderService proxyVoucherOrderService; // 延迟注入自身代理以避免循环依赖
 
     // ============ 异步秒杀相关 ============
     
@@ -195,7 +197,7 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         
         try {
             // 通过代理对象调用，确保@Transactional注解生效
-            voucherOrderService.createVoucherOrder(voucherOrder);
+            proxyVoucherOrderService.createVoucherOrder(voucherOrder);
         } finally {
             // 释放锁
             lock.unlock();
@@ -280,7 +282,7 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         Long voucherId = voucherOrder.getVoucherId();
         
         // 1.1 查询订单
-        int count = query().eq("user_id", userId).eq("voucher_id", voucherId).count();
+        long count = query().eq("user_id", userId).eq("voucher_id", voucherId).count();
         // 1.2 判断是否存在
         if (count > 0) {
             // 用户已经购买过了
