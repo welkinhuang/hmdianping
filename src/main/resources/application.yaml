@@ -4,13 +4,13 @@ spring:
   application:
     name: hmdp
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/hmdp?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: root
+url: jdbc:mysql://${MYSQL_HOST:10.212.7.238}:${MYSQL_PORT:3306}/hmdp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:root}
   redis:
-    host: 127.0.0.1
-    port: 6379
-    password: 123456
+    host: ${REDIS_HOST:192.168.155.129}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:123456}
     lettuce:
       pool:
         max-active: 10
@@ -18,9 +18,9 @@ spring:
         min-idle: 1
         time-between-eviction-runs: 10s
   jackson:
-    default-property-inclusion: non_null # JSON处理时忽略非空字段
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
+    default-property-inclusion: non_null
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    time-zone: "GMT+8"
 mybatis-plus:
   type-aliases-package: com.hmdp.entity # 别名扫描包
 logging:
