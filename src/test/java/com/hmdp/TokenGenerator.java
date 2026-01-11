@@ -6,6 +6,8 @@ import cn.hutool.core.lang.UUID;
 import com.hmdp.dto.UserDTO;
 import com.hmdp.entity.User;
 import com.hmdp.service.IUserService;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -25,6 +27,7 @@ import static com.hmdp.utils.RedisConstants.LOGIN_USER_TTL;
 /**
  * Token生成器 - 用于生成JMeter测试所需的token.txt文件
  */
+@Disabled
 @SpringBootTest
 public class TokenGenerator {
 

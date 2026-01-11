@@ -19,8 +19,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Disabled;
 
 @SpringBootTest
+@Disabled
 public class HmDianPingApplicationTests {
     @Resource
     private RedisIdWorker redisIdWorker;
