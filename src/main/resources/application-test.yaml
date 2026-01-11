@@ -1,0 +1,32 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: hmdp-test
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # ⚠️ 关键修改 1：使用 VMnet8 的 IP (Windows 对虚拟机的专线通道)
+    # 这个 IP 通常是 x.x.x.1，比 10.212.x.x 稳定得多，不会随 WiFi 变化
+    url: jdbc:mysql://192.168.155.1:3306/hmdp?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root  # 保持和你原配置一致
+  redis:
+    # ⚠️ 关键修改 2：使用 Docker 网关 IP (容器访问宿主机的后门)
+    # 比 192.168.155.129 更稳，且不受外部防火墙影响
+    host: 192.168.155.129
+    port: 6379
+    password: 123456 # 保持和你原配置一致
+    database: 0
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 1
+        time-between-eviction-runs: 10s
+
+mybatis-plus:
+  type-aliases-package: com.hmdp.entity
+logging:
+  level:
+    com.hmdp: debug
